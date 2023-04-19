@@ -147,3 +147,30 @@
 ;; if you want to disable all modelines:
 (setq-default mode-line-format nil)
 (setq mode-line-format nil)
+
+;; so we can move between windows easier
+(setq windmove-wrap-around t)
+
+;; The following was written by ChatGPT to beautify org mode
+;; Set the variable pitch font to Arial
+(setq doom-font (font-spec :family "Arial" :size 24))
+(set-face-attribute 'variable-pitch nil :family "Arial" :height 240)
+;; Use mixed-pitch-mode in Org mode
+(use-package! mixed-pitch
+  :hook (org-mode . mixed-pitch-mode)
+  :config
+  ;; Set the fixed-pitch font to the default font
+  (set-face-attribute 'fixed-pitch nil :inherit 'default)
+  ;; Configure which faces should use the fixed-pitch font
+  (setq mixed-pitch-fixed-pitch-faces '(org-code org-link org-block org-table line-number line-number-current-line))
+  )
+
+(defun my-org-block-background-color ()
+  (set-face-attribute 'org-block nil :background "#363636")) ; Change "#EEEEEE" to your desired color
+
+(add-hook 'org-mode-hook 'my-org-block-background-color)
+
+;; Disable company-mode in Org mode
+(add-hook 'org-mode-hook (lambda () (company-mode -1)))
+
+;; end chatgpt stuff
