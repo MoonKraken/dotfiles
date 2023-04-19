@@ -145,22 +145,20 @@
 (define-key org-mode-map (kbd "s-j") 'org-insert-todo-heading) ; s is for hyper
 
 ;; if you want to disable all modelines:
-(setq-default mode-line-format nil)
-(setq mode-line-format nil)
+;; (setq-default mode-line-format nil)
+;; (setq mode-line-format nil)
 
 ;; so we can move between windows easier
 (setq windmove-wrap-around t)
 
 ;; The following was written by ChatGPT to beautify org mode
-;; Set the variable pitch font to Arial
-(setq doom-font (font-spec :family "Arial" :size 24))
-(set-face-attribute 'variable-pitch nil :family "Arial" :height 240)
 ;; Use mixed-pitch-mode in Org mode
 (use-package! mixed-pitch
   :hook (org-mode . mixed-pitch-mode)
   :config
   ;; Set the fixed-pitch font to the default font
   (set-face-attribute 'fixed-pitch nil :inherit 'default)
+  (set-face-attribute 'variable-pitch nil :family "Arial" :height 240)
   ;; Configure which faces should use the fixed-pitch font
   (setq mixed-pitch-fixed-pitch-faces '(org-code org-link org-block org-table line-number line-number-current-line))
   )
