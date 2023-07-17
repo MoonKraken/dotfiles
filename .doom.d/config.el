@@ -104,19 +104,10 @@
         :major-modes '(zig-mode)
         :server-id 'zls))))
 
-(pythonic-activate "~/penv")
-;; beautify org mode stuff
-;; (custom-theme-set-faces!
-;;    'user
-;;    '(org-code :family "Menlo")
-;;    '(org-block :family "Menlo")
-;;    '(org-default :family "Arial")
-;;    ;; '(org-roam-title :family "Arial")
-;; )
-;; end beautify org mode
+(pythonic-activate "~/penv2")
 
 ;; vlang
-(require 'v-mode)
+;; (require 'v-mode)
 ;; (define-key v-mode-map (kbd "M-z") 'v-menu)
 ;; (define-key v-mode-map (kbd "<f6>")  'v-menu)
 ;; (define-key v-mode-map (kbd "C-c C-f") 'v-format-buffer)
@@ -127,26 +118,26 @@
     '(line-number :foreground "dim gray"))
 ;; everything here is for reducing noise while recording videos
 ;; we should make this a function at some point
-(setq lsp-ui-doc-enable nil)
-(setq lsp-headerline-breadcrumb-enable nil)
-(setq lsp-ui-sideline-enable nil)
-(setq lsp-signature-render-documentation nil)
-(setq lsp-signature-auto-activate nil)
-(setq lsp-eldoc-enable-hover nil)
-(setq lsp-completion-provider :none)
-(setq lsp-completion-show-detail nil)
-(setq lsp-completion-show-kind nil)
-(setq lsp-ui-doc-show-with-cursor nil)
-(setq lsp-ui-doc-show-with-mouse nil)
-(setq lsp-ui-sideline-show-hover nil)
-(setq lsp-modeline-code-actions-enable nil)
-(setq lsp-completion-enable nil)
+;; (setq lsp-ui-doc-enable nil)
+;; (setq lsp-headerline-breadcrumb-enable nil)
+;; (setq lsp-ui-sideline-enable nil)
+;; (setq lsp-signature-render-documentation nil)
+;; (setq lsp-signature-auto-activate nil)
+;; (setq lsp-eldoc-enable-hover nil)
+;; (setq lsp-completion-provider :none)
+;; (setq lsp-completion-show-detail nil)
+;; (setq lsp-completion-show-kind nil)
+;; (setq lsp-ui-doc-show-with-cursor nil)
+;; (setq lsp-ui-doc-show-with-mouse nil)
+;; (setq lsp-ui-sideline-show-hover nil)
+;; (setq lsp-modeline-code-actions-enable nil)
+;; (setq lsp-completion-enable nil)
 
 (define-key org-mode-map (kbd "s-j") 'org-insert-todo-heading) ; s is for hyper
 
 ;; if you want to disable all modelines:
-;; (setq-default mode-line-format nil)
-;; (setq mode-line-format nil)
+(setq-default mode-line-format nil)
+(setq mode-line-format nil)
 
 ;; so we can move between windows easier
 (setq windmove-wrap-around t)
@@ -163,12 +154,55 @@
   (setq mixed-pitch-fixed-pitch-faces '(org-code org-link org-block org-table line-number line-number-current-line))
   )
 
+;; background color for code blocks in org mode
 (defun my-org-block-background-color ()
   (set-face-attribute 'org-block nil :background "#363636")) ; Change "#EEEEEE" to your desired color
 
 (add-hook 'org-mode-hook 'my-org-block-background-color)
 
+;; black background in org mode
+;; (add-hook 'org-mode-hook
+;;    (lambda ()
+;;      (set-background-color "black")))
+
 ;; Disable company-mode in Org mode
 (add-hook 'org-mode-hook (lambda () (company-mode -1)))
 
-;; end chatgpt stuff
+
+;; center stuff in org mode
+(setq-default visual-fill-column-width 80)
+(setq-default visual-fill-column-center-text t)  ;; center the text
+(add-hook 'org-mode-hook
+          (lambda ()
+            (visual-line-mode 1)
+            (visual-fill-column-mode 1)));
+
+;; end chatgpt generated stuff
+
+;; this is for zmk .keymap files
+(add-to-list 'auto-mode-alist '("\\.keymap\\'" . c-mode))
+
+;; the following is to allow us to us 'gss' to jump across splits
+(setq avy-all-windows t)
+
+(setenv "LIBTORCH" "/opt/homebrew/Cellar/pytorch/2.0.0_1")
+
+;; org-present
+(eval-after-load "org-present"
+'(progn
+        (add-hook 'org-present-mode-hook
+                (lambda ()
+                        ;; (org-present-big)
+                        (org-display-inline-images)
+                        (org-present-hide-cursor)
+                        (org-present-read-only)))
+        (add-hook 'org-present-mode-quit-hook
+                (lambda ()
+                        ;; (org-present-small)
+                        (org-remove-inline-images)
+                        (org-present-show-cursor)
+                        (org-present-read-write)))))
+
+;; enable all features for current rust project so we can see errors
+;; (setq lsp-rust-analyzer-cargo-watch-args ["--all-features"])
+;; (setq lsp-rust-analyzer-cargo-watch-args ["--features" "ssr"])

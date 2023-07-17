@@ -195,6 +195,7 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
+vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -409,7 +410,7 @@ local servers = {
   -- clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   -- tsserver = {},
 
   lua_ls = {
@@ -493,3 +494,19 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+--some convenience functions for editing the config
+local function edit_config()
+  vim.cmd("edit ~/.config/nvim/init.lua")
+end
+
+local function source_config()
+  vim.cmd("source ~/.config/nvim/init.lua")
+  print("Config reloaded")
+end
+local function set_config_related_keybindings()
+  local map_opts = {noremap = true, silent = true}
+  vim.keymap.set("n", "<leader>ec", edit_config, map_opts)
+  vim.keymap.set("n", "<leader>sc", source_config, map_opts)
+end
+set_config_related_keybindings()
