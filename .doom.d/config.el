@@ -203,6 +203,8 @@
                         (org-present-show-cursor)
                         (org-present-read-write)))))
 
+;; ligatures - this is specific to the mac port of emacs specifically. Outside of it a different solution might have to be used
+(mac-auto-operator-composition-mode)
 ;; enable all features for current rust project so we can see errors
 ;; (setq lsp-rust-analyzer-cargo-watch-args ["--all-features"])
 ;; (setq lsp-rust-analyzer-cargo-watch-args ["--features" "ssr"])
