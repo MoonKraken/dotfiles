@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! zig-mode)
+(package! evil-snipe :disable t)

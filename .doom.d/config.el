@@ -92,17 +92,17 @@
   (interactive)
   (insert (buffer-file-name (current-buffer))))
 
-(use-package! zig-mode
-  :hook ((zig-mode . lsp-deferred))
-  :custom (zig-format-on-save nil)
-  :config
-  (after! lsp-mode
-    (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
-    (lsp-register-client
-      (make-lsp-client
-        :new-connection (lsp-stdio-connection "/Users/kenk/cli_apps/zls")
-        :major-modes '(zig-mode)
-        :server-id 'zls))))
+;; (use-package! zig-mode
+;;   :hook ((zig-mode . lsp-deferred))
+;;   :custom (zig-format-on-save nil)
+;;   :config
+;;   (after! lsp-mode
+;;     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+;;     (lsp-register-client
+;;       (make-lsp-client
+;;         :new-connection (lsp-stdio-connection "/Users/kenk/cli_apps/zls")
+;;         :major-modes '(zig-mode)
+;;         :server-id 'zls))))
 
 (pythonic-activate "~/penv2")
 
@@ -136,7 +136,7 @@
 (define-key org-mode-map (kbd "s-j") 'org-insert-todo-heading) ; s is for hyper
 
 ;; if you want to disable all modelines:
-(setq-default mode-line-format nil)
+(setq-default mode-line-format t)
 (setq mode-line-format nil)
 
 ;; so we can move between windows easier
@@ -177,6 +177,7 @@
             (visual-line-mode 1)
             (visual-fill-column-mode 1)));
 
+
 ;; end chatgpt generated stuff
 
 ;; this is for zmk .keymap files
@@ -205,6 +206,16 @@
 
 ;; ligatures - this is specific to the mac port of emacs specifically. Outside of it a different solution might have to be used
 (mac-auto-operator-composition-mode)
-;; enable all features for current rust project so we can see errors
-;; (setq lsp-rust-analyzer-cargo-watch-args ["--all-features"])
-;; (setq lsp-rust-analyzer-cargo-watch-args ["--features" "ssr"])
+
+;; do we actually need this?
+;; (setq lsp-rust-analyzer-cargo-watch-args ["--features" "hydrate"])
+;; (setq lsp-rust-all-features t)
+
+(require 'evil)
+(require 'avy)
+
+(evil-define-key 'normal 'global (kbd "s") #'avy-goto-char-2)
+(evil-define-key 'normal 'global (kbd "C-l") #'avy-move-line)
+(evil-define-key 'normal 'global (kbd "C-k") #'avy-copy-line)
+(evil-define-key 'normal 'global (kbd "M-C-l") #'avy-move-region)
+(evil-define-key 'normal 'global (kbd "M-C-k") #'avy-copy-region)
