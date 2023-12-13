@@ -41,7 +41,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 ;; (setq org-directory "~/org-roam/")
-(setq org-directory "~/org-roam/")
+(setq org-directory "/Users/kenk/Library/Mobile Documents/com~apple~CloudDocs/tao")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -84,8 +84,12 @@
 
 ;; this is for mermaid support
 (setq ob-mermaid-cli-path "/opt/homebrew/bin/mmdc")
+;; (org-babel-do-load-languages
+;;     'org-babel-load-languages
+;;     '((mermaid . t)
+;;       ))
 
-(use-package! org-roam :custom (org-roam-directory "~/org-roam") :config (org-roam-setup))
+(use-package! org-roam :custom (org-roam-directory "/Users/kenk/Library/Mobile Documents/com~apple~CloudDocs/tao") :config (org-roam-setup))
 
 (defun buffer/insert-filename ()
   "Insert file name of current buffer at current point"
@@ -208,7 +212,7 @@
 (mac-auto-operator-composition-mode)
 
 ;; do we actually need this?
-;; (setq lsp-rust-analyzer-cargo-watch-args ["--features" "hydrate"])
+(setq lsp-rust-analyzer-cargo-watch-args ["--features" "ssr"])
 ;; (setq lsp-rust-all-features t)
 
 (require 'evil)
@@ -219,3 +223,44 @@
 (evil-define-key 'normal 'global (kbd "C-k") #'avy-copy-line)
 (evil-define-key 'normal 'global (kbd "M-C-l") #'avy-move-region)
 (evil-define-key 'normal 'global (kbd "M-C-k") #'avy-copy-region)
+
+(defun cttm-clients ()
+  "Query Org-roam files with a specific tag and display 'Fit' and 'State' properties."
+  (interactive)
+  (let ((results (org-roam-ql-query
+                  :select '(file fit state)
+                  :from 'nodes
+                  :where '(and (tags '("your-specific-tag"))
+                               (properties '("Fit" "State"))))))
+    ;; Process and display the results here
+    (message "Query Results: %s" results)))
+;; it seems like there is an attempt to do this by default
+;; but it doesn't work and i'm not exactly sure why
+(map! :leader
+      :desc "Format buffer with LSP"
+      "c f" #'lsp-format-buffer)
+
+(cl-defmethod org-roam-node-fit ((node org-roam-node))
+    "Return the currently set category for the NODE."
+    (cdr (assoc-string "FIT" (org-roam-node-properties node))))
+(cl-defmethod org-roam-node-fit ((node org-roam-node))
+    "Return the currently set category for the NODE."
+    (cdr (assoc-string "STATE" (org-roam-node-properties node))))
+(cl-defmethod org-roam-node-fit ((node org-roam-node))
+    "Return the currently set category for the NODE."
+    (cdr (assoc-string "STATUS" (org-roam-node-properties node))))
+;; (use-package ellama
+;;   :init
+;;   (setopt ellama-language "English")
+;;   (require 'llm-ollama)
+;;   (setopt ellama-provider
+;; 		  (make-llm-ollama
+;; 		   :chat-model "zephyr" :embedding-model "zephyr")))
+
+;; Enable this when debugging LSP related issues
+;; (setq lsp-log-io t)
+
+(use-package org-roam-ql
+  :after org-roam
+  ;; Additional configuration goes here
+)
